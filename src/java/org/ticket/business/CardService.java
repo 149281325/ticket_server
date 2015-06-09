@@ -48,16 +48,16 @@ public class CardService {
     
     double contextPrice = SysConfig.getDefaultPrice();
     
-    String ret0(String errMsg) {
-        if(errMsg != null) {
-            return "{\"state\":\"err\",\"msg\":\"" + errMsg + "\"}";
-        } else {
-            return "{\"state\":\"ok\"}";
-        }
-    }
+    public static final String SIMPLE_RESULT = "{\"Result\":%d,\"Remark\":\"%s\"}";
     
-    String ret(String errMsg) {
-        return errMsg == null ? "ok" : errMsg;
+    String ret(String remark) {
+        if(remark == null) {
+            return String.format(SIMPLE_RESULT, 1, "ok.");
+        } else if(remark.startsWith("ok")) {
+            return String.format(SIMPLE_RESULT, 1, remark);
+        } else {
+            return String.format(SIMPLE_RESULT, 0, remark);
+        }
     }
     
     /**
@@ -90,8 +90,8 @@ public class CardService {
      * @param json
      *      JSON string like:
      *      {"type":"check","uid":"FFFFFFFF","count":1}
-     *      {"type":"check","uid":"FFFFFFFF","count":1,"valid_check":"y"}
-     *      {"type":"check","uid":"FFFFFFFF","balance":233.00,"valid_check":"y"}
+     *      {"type":"check","uid":"FFFFFFFF","count":1,"valid_check":"true"}
+     *      {"type":"check","uid":"FFFFFFFF","balance":233.00,"valid_check":"true"}
      * @return 
      */
     @POST
@@ -124,11 +124,11 @@ public class CardService {
         double balance = 0;
         if(j.has("count")) {
             if(j.has("valid_check")) {
-                if("y".equals(j.getString("valid_check"))) {
+                if("true".equals(j.getString("valid_check"))) {
                     try {
-                        validateDate(card);
-                    } catch(IllegalStateException ie) {
-                        return ret(ie.getMessage());
+                        validateDate(card, j);
+                    } catch(Exception e) {
+                        return ret(e.getMessage());
                     }
                 }
             } 
@@ -143,11 +143,11 @@ public class CardService {
             card.setRemainTimes(points - count);
         } else if(j.has("balance")) {
             if(j.has("valid_check")) {
-                if("y".equals(j.getString("valid_check"))) {
+                if("true".equals(j.getString("valid_check"))) {
                     try {
-                        validateDate(card);
-                    } catch(IllegalStateException ie) {
-                        return ret(ie.getMessage());
+                        validateDate(card, j);
+                    } catch(Exception e) {
+                        return ret(e.getMessage());
                     }
                 }
             } 
@@ -180,11 +180,16 @@ public class CardService {
         return ret(null);
     }
     
-    void validateDate(TCard c) {
+    void validateDate(TCard c, JSONObject j) throws JSONException {
         Date begin = c.getValidFrom();
         Date end = c.getValidTo();
-        boolean b = DateUtil.atRange(new Date(), begin, end);
-        if(!b) {
+        if(begin == null && end == null) {
+            if(j.has("nodate_valid") && "true".equals(j.getString("nodate_valid"))) {
+                    return;
+            }
+            throw new IllegalStateException("Card without valid date not allowed");
+        }
+        if(!DateUtil.atRange(new Date(), begin, end)) {
             throw new IllegalStateException("Invalid date: " + DateUtil.dateToStr(begin) + " - " + DateUtil.dateToStr(end));
         }
     }
