@@ -52,7 +52,7 @@ public class TOrder implements Serializable {
     @Column(name = "USER_ID")
     private Integer userId;
     @Column(name = "CARD_ID")
-    private Integer cardId;
+    private Long cardId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "ACTIVITY_ID")
@@ -109,11 +109,11 @@ public class TOrder implements Serializable {
         this.userId = userId;
     }
 
-    public Integer getCardId() {
+    public Long getCardId() {
         return cardId;
     }
 
-    public void setCardId(Integer cardId) {
+    public void setCardId(Long cardId) {
         this.cardId = cardId;
     }
 

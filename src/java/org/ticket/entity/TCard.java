@@ -43,7 +43,7 @@ public class TCard implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CARD_TYPE")
@@ -68,20 +68,20 @@ public class TCard implements Serializable {
     public TCard() {
     }
 
-    public TCard(Integer id) {
+    public TCard(Long id) {
         this.id = id;
     }
 
-    public TCard(Integer id, int cardType) {
+    public TCard(Long id, int cardType) {
         this.id = id;
         this.cardType = cardType;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

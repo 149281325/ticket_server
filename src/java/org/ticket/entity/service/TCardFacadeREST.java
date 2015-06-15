@@ -43,20 +43,20 @@ public class TCardFacadeREST extends AbstractFacade<TCard> {
     @PUT
     @Path("{id}")
     @Consumes({"application/xml", "application/json"})
-    public void edit(@PathParam("id") Integer id, TCard entity) {
+    public void edit(@PathParam("id") Long id, TCard entity) {
         super.edit(entity);
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
+    public void remove(@PathParam("id") Long id) {
         super.remove(super.find(id));
     }
 
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
-    public TCard find(@PathParam("id") Integer id) {
+    public TCard find(@PathParam("id") Long id) {
         return super.find(id);
     }
 
@@ -67,12 +67,13 @@ public class TCardFacadeREST extends AbstractFacade<TCard> {
         return super.findAll();
     }
 
+    /*
     @GET
     @Path("{from}/{to}")
     @Produces({"application/xml", "application/json"})
-    public List<TCard> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<TCard> findRange(@PathParam("from") Long from, @PathParam("to") Long to) {
         return super.findRange(new int[]{from, to});
-    }
+    }*/
 
     @GET
     @Path("count")

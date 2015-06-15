@@ -26,8 +26,6 @@ INSERT INTO T_M_USERTYPE VALUES(2, "VIP USER");
   1：有效期型
   2：余额型
   4：计数型
-  8: 单日卡（进场8小时后失效）
-  16: 工作人员卡（随时出入）
   3：有效期加余额型
   5：有效期加计数型
 */
@@ -48,8 +46,7 @@ INSERT INTO T_M_CARDTYPE VALUES(5, "VALID DATE + REMAIN TIMES");
 /*
 支付类型表
   1：用户账户支付
-  11：卡支付，剩余次数方式
-  12：卡支付，余额方式
+  2：卡支付
 */
 CREATE TABLE T_M_PAYTYPE (
   TYPE_ID INT NOT NULL,

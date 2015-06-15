@@ -79,7 +79,7 @@ public class TOrderFacadeREST extends AbstractFacade<TOrder> {
     @GET
     @Path("query")
     @Produces({"application/json"})
-    public List<TOrder> findByCardAndActivity(@QueryParam("cardId") Integer cardId, @QueryParam("actId") Integer actId) {
+    public List<TOrder> findByCardAndActivity(@QueryParam("cardId") Long cardId, @QueryParam("actId") Integer actId) {
         Query q = em.createNamedQuery("TOrder.findByCardAndActivity");
         q.setParameter("cardId", cardId).setParameter("activityId", actId);
         return q.getResultList();

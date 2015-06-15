@@ -18,7 +18,7 @@ public class JSONUtil {
     public static TCard asCard(String jsonStr) throws JSONException {
         TCard entity = new TCard();
         JSONObject json = new JSONObject(jsonStr);
-        entity.setId(Integer.parseInt(json.getString("uid"), 16));
+        entity.setId(Long.parseLong(json.getString("uid"), 16));
         int type = 0;
         if(json.has("count")) {
             type += TMCardtype.REMAIN_TIMES;
@@ -43,11 +43,11 @@ public class JSONUtil {
             entity.setValidTo(DateUtil.strToDate(dateStr));
         }
         if(json.has("single_day")) {
-            if("y".equals(json.getString("single_day")))
+            if(json.getBoolean("single_day"))
                 type += TMCardtype.LIMIT_8HOURS;
         }
         if(json.has("staff")) {
-            if("y".equals(json.getString("staff")))
+            if(json.getBoolean("staff"))
                 type += TMCardtype.STAFF;
         }
         entity.setCardType(type);
@@ -58,7 +58,7 @@ public class JSONUtil {
     }
     
     private static void inspectCard(TCard c) {
-        System.out.println("--- CARD " + Integer.toHexString(c.getId()) + "---");
+        System.out.println("--- CARD " + Long.toHexString(c.getId()) + "---");
         System.out.println("type: " + c.getCardType());
         System.out.println("state: " + c.getCardState());
         System.out.println("balance: " + c.getBalance());
@@ -80,8 +80,9 @@ public class JSONUtil {
     
     public static void main(String args[]) throws Exception {
         //System.out.println("hao!");
-        //int mx = Integer.parseUnsignedInt("ffffffff", 16);
+        System.out.println(Long.parseLong("ffffffff", 16));
+        System.out.println(Integer.MAX_VALUE);
         //System.out.println(Integer.toHexString(mx));
-        testCard();
+        //testCard();
     }
 }
