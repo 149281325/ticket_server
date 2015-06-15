@@ -121,7 +121,6 @@ public class CardService {
         
         //update the card
         int count = 0;
-        double balance = 0;
         if(j.has("count")) {
             if(j.has("valid_check")) {
                 if(j.getBoolean("valid_check")) {
@@ -141,7 +140,10 @@ public class CardService {
                 return ret("Remain times not enough! Remain " + points + " times but need " + count);
             }
             card.setRemainTimes(points - count);
-        } else if(j.has("balance")) {
+        }
+        
+        double balance = 0;
+        if(j.has("balance")) {
             if(j.has("valid_check")) {
                 if(j.getBoolean("valid_check")) {
                     try {
